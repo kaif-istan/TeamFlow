@@ -1,0 +1,16 @@
+ <svg
+      viewBox="0 0 110 60"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn("size-10 w-auto", className)}
+    >
+      <path
+        d="M12 30 C20 18, 32 38, 42 30 C52 22, 64 42, 74 30 C82 20, 90 25, 96 30"
+        stroke="currentColor"
+        strokeWidth="7"
+        fill="none"
+        strokeLinecap="round"
+      />
+      <circle cx="12" cy="30" r="6" fill="currentColor" />
+      <circle cx="96" cy="30" r="7" fill="currentColor" />
+    </svg>
