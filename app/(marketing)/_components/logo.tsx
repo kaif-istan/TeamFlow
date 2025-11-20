@@ -22,9 +22,9 @@ export const Logo = ({
     >
       <defs>
         <linearGradient id="tailflow-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%"   stop-color="#A78BFA" />
-          <stop offset="50%"  stop-color="#60A5FA" />
-          <stop offset="100%" stop-color="#34D399" />
+          <stop offset="0%"   stopColor="#A78BFA" />
+          <stop offset="50%"  stopColor="#60A5FA" />
+          <stop offset="100%" stopColor="#34D399" />
         </linearGradient>
       </defs>
 
