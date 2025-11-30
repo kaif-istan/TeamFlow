@@ -1,3 +1,4 @@
+"use client"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,13 +20,14 @@ import {
   LogoutLink,
   PortalLink,
 } from "@kinde-oss/kinde-auth-nextjs/components";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { orpc } from "@/lib/orpc";
+import { getUserAvatar } from "@/lib/get-avatar";
 
-const user = {
-  avatar: "https://avatars.githubusercontent.com/u/124599?v=4",
-  given_name: "Md Kaif",
-};
+
 
 export function UserNav() {
+  const { data: { user } } = useSuspenseQuery(orpc.workspace.list.queryOptions())
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -35,8 +37,8 @@ export function UserNav() {
           className="size-12 rounded-xl hover:rounded-lg transition-all duration-200 bg-background/50 border-border/50 hover:bg-accent hover:text-accent-foreground "
         >
           <Avatar>
-            <AvatarImage src={user.avatar} alt="@shadcn" />
-            <AvatarFallback>{user.given_name.slice(0, 2)}</AvatarFallback>
+            <AvatarImage src={getUserAvatar(user.picture, user.email!)} alt="@shadcn" />
+            <AvatarFallback>{user.given_name?.slice(0, 2)}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
@@ -48,8 +50,8 @@ export function UserNav() {
       >
         <DropdownMenuLabel className="flex gap-2">
           <Avatar>
-            <AvatarImage src={user.avatar} alt="@shadcn" />
-            <AvatarFallback>{user.given_name.slice(0, 2)}</AvatarFallback>
+            <AvatarImage src={getUserAvatar(user.picture, user.email!)} alt="@shadcn" />
+            <AvatarFallback>{user.given_name?.slice(0, 2)}</AvatarFallback>
           </Avatar>
           <div className="flex flex-col text-left text-sm leading-tight">
             <p className="truncate font-medium">{user.given_name}</p>

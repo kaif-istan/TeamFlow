@@ -2,4 +2,7 @@
 1. [NEXT.js](https://nextjs.org/docs/app/getting-started/installation)
 2. [ShadCN](https://ui.shadcn.com/docs/installation/next)
 3. [Kinde](https://docs.kinde.com/developer-tools/sdks/backend/nextjs-sdk/)
-
+4. [Tanstack Query](https://tanstack.com/query/latest/docs/framework/react/overview)
+5. [oRPC](https://orpc.dev/)
+6. [Kinde Management API - JavaScript package for interacting with the Kinde Management API](https://kinde-oss.github.io/kinde-management-api-js/)
+7. [Vercel Avatar API](https://github.com/vercel/avatar)

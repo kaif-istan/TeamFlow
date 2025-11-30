@@ -29,9 +29,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { workspaceSchema } from "@/app/schema/workspaceSchema";
+import { workspaceSchema, workspaceSchemaType } from "@/app/schema/workspaceSchema";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { orpc } from "@/lib/orpc";
+import { toast } from "sonner";
+import { create } from "domain";
 const CreateWorkspace = () => {
   const [open, setOpen] = useState(false);
+  const queryClient = useQueryClient()
 
   // 2. Define form
   const form = useForm<z.infer<typeof workspaceSchema>>({
@@ -41,11 +46,28 @@ const CreateWorkspace = () => {
     },
   });
 
+  const createWorkspaceMutation = useMutation(orpc.workspace.create.mutationOptions({
+    onSuccess: (newWorkspace) => {
+      toast.success(`Workspace ${newWorkspace.workspaceName} created successfully`);
+
+      queryClient.invalidateQueries({
+        queryKey: orpc.workspace.list.queryKey()
+      })
+
+      form.reset()
+
+      setOpen(false)
+    },
+    onError: () => {
+      toast.error('Failed to create workspace, try again!')
+    }
+  }))
+
   // 3. Define a submit handler.
-  const onSubmit = (values: z.infer<typeof workspaceSchema>) => {
+  const onSubmit = (values: workspaceSchemaType) => {
     // Do something with the form values.
     // This will be type-safe and validated
-    console.log(values);
+    createWorkspaceMutation.mutate(values)
   };
 
   return (
@@ -88,8 +110,8 @@ const CreateWorkspace = () => {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full">
-                Create Workspace
+              <Button disabled={createWorkspaceMutation.isPending} type="submit" className="w-full">
+                {createWorkspaceMutation.isPending ? 'Creating...' : 'Create Workspace'}
               </Button>
             </form>
           </Form>
