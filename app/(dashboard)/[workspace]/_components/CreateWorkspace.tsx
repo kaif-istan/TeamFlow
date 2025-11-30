@@ -34,6 +34,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { orpc } from "@/lib/orpc";
 import { toast } from "sonner";
 import { create } from "domain";
+import { isDefinedError } from "@orpc/client";
 const CreateWorkspace = () => {
   const [open, setOpen] = useState(false);
   const queryClient = useQueryClient()
@@ -58,7 +59,15 @@ const CreateWorkspace = () => {
 
       setOpen(false)
     },
-    onError: () => {
+    onError: (error) => {
+      if (isDefinedError(error)) {
+        if (error.code === "RATE_LIMITED") {
+          toast.error('Rate limit exceeded. Try again after 60s.')
+          return
+        }
+        toast.error(error.message)
+        return
+      }
       toast.error('Failed to create workspace, try again!')
     }
   }))
