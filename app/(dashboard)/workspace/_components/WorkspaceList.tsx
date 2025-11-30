@@ -47,13 +47,16 @@ export const WorkspaceList = () => {
                 <Button
                   size="icon"
                   className={cn(
-                    "size-12 transition-all duration-200",
+                    "size-12 rounded-lg transition-all duration-150 flex items-center justify-center hover:text-black dark:hover:text-white",
                     getWorkspaceColor(ws.id),
-                    isActive ? "rounded-lg" : "rounded-xl hover:rounded-lg"
+                    isActive
+                      ? "ring-2 ring-white ring-offset-2 ring-offset-sidebar shadow-sm"
+                      : "hover:bg-white/10 hover:shadow-sm"
                   )}
                 >
-                  <span className="text-sm font-semibold">{ws.avatar}</span>
+                  <span className="text-sm font-semibold ">{ws.avatar}</span>
                 </Button>
+
               </LoginLink>
             </TooltipTrigger>
             <TooltipContent side="right">
