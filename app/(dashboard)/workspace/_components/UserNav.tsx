@@ -23,6 +23,7 @@ import {
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { orpc } from "@/lib/orpc";
 import { getUserAvatar } from "@/lib/get-avatar";
+import Image from "next/image";
 
 
 
@@ -37,7 +38,12 @@ export function UserNav() {
           className="size-12 rounded-xl hover:rounded-lg transition-all duration-200 bg-background/50 border-border/50 hover:bg-accent hover:text-accent-foreground "
         >
           <Avatar>
-            <AvatarImage src={getUserAvatar(user.picture, user.email!)} alt="@shadcn" />
+            <Image
+              src={getUserAvatar(user.picture, user.email!)}
+              alt="@shadcn"
+              fill
+              className="object-cover"
+            />
             <AvatarFallback>{user.given_name?.slice(0, 2)}</AvatarFallback>
           </Avatar>
         </Button>

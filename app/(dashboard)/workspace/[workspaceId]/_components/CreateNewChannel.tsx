@@ -22,13 +22,19 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { orpc } from "@/lib/orpc"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { isDefinedError } from "@orpc/client"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { FormInput, Plus } from "lucide-react"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "sonner"
 
 export function CreateNewChannel() {
     const [open, setOpen] = useState(false)
+
+    const queryClient = useQueryClient()
 
     const form = useForm<channelNameSchemaType>({
         resolver: zodResolver(channelNameSchema),
@@ -36,6 +42,29 @@ export function CreateNewChannel() {
             name: "",
         }
     })
+
+    const CreateNewChannel = useMutation(orpc.channel.create.mutationOptions({
+        onSuccess: (newChannel) => {
+            toast.success(`Channel ${newChannel.name} created successfully`)
+            queryClient.invalidateQueries({
+                queryKey: orpc.channel.list.queryKey(),
+            })
+            form.reset()
+            setOpen(false)
+        },
+        onError: (error) => {
+            if (isDefinedError(error)) {
+                toast.error(error.message)
+                return
+            }
+            toast.error("Something went wrong")
+        }
+
+    }))
+
+    const onSubmit = (values: channelNameSchemaType) => {
+        CreateNewChannel.mutate(values)
+    }
 
     const watchedName = form.watch("name")
     const transformedName = watchedName ? transformChannelName(watchedName) : ""
@@ -56,7 +85,7 @@ export function CreateNewChannel() {
                     </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
-                    <form className="space-y-6">
+                    <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
                         <FormField
                             control={form.control}
                             name='name'
@@ -75,7 +104,7 @@ export function CreateNewChannel() {
                                 </FormItem>
                             )}
                         />
-                        <Button type="submit" className="w-full">Create Channel</Button>
+                        <Button disabled={CreateNewChannel.isPending} type="submit" className="w-full">{CreateNewChannel.isPending ? "Creating..." : "Create Channel"}</Button>
                     </form>
                 </Form>
             </DialogContent>
