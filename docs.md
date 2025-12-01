@@ -6,3 +6,7 @@
 5. [oRPC](https://orpc.dev/)
 6. [Kinde Management API - JavaScript package for interacting with the Kinde Management API](https://kinde-oss.github.io/kinde-management-api-js/)
 7. [Vercel Avatar API](https://github.com/vercel/avatar)
+8. [Arcjet](https://arcjet.io/)
+9. [Prisma](https://www.prisma.io/)
+10. [Neon Postgres](https://neon.com/)
+11. [Zod](https://zod.dev/)
